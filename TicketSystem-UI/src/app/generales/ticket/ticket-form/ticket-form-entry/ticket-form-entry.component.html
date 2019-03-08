@@ -1,0 +1,129 @@
+<div *ngIf="vm && vmEntrada">
+  <form #tmtsFormTicket="ngForm" action="javascript:" (ngSubmit)="registrar(tmtsFormTicket)">
+    <div class="row">
+      <div class="col-12 col-sm-12 col-md-12 col-lg-10 col-xl-6 offset-lg-1 offset-xl-3">
+
+        <tmts-identificador [identificador]="vm.numero"></tmts-identificador>
+
+        <div class="card tmts-shadow">
+          <div class="card-body">
+            <h5>Ticket Information</h5>
+            <div class="table-responsive">
+              <table class="table matrics-table">
+                <tbody>
+                  <tr *ngIf="vm.numero">
+                    <td><strong>Number #</strong></td>
+                    <td>{{vm.numero}}</td>
+                  </tr>
+                  
+                  <tr *ngIf="vm.tema">
+                    <td><strong>Subject</strong></td>
+                    <td>{{vm.tema}}</td>
+                  </tr>
+
+                  <tr *ngIf="vm.descripcion">
+                    <td><strong>Description</strong></td>
+                    <td>{{vm.descripcion}}</td>
+                  </tr>
+
+                  <tr *ngIf="vm.fechaCreacion">
+                    <td><strong>Date</strong></td>
+                    <td>{{vm.fechaCreacion | date:'MM/dd/yyyy'}}</td>
+                  </tr>
+
+                  <tr *ngIf="vm.ticketEstadoId">
+                    <td><strong>Status</strong></td>
+                    <td>
+                        <span *ngIf="vm.ticketEstadoId === ticketStatus.Pending" [style.background-color]= "'#0149ad'" class="badge badge-primary">Pending</span>
+                        <span *ngIf="vm.ticketEstadoId === ticketStatus.Open" [style.background-color]= "'#00b300'" class="badge badge-primary">Open</span>
+                        <span *ngIf="vm.ticketEstadoId === ticketStatus.Concluded" [style.background-color]= "'#009900'" class="badge badge-primary">Concluded</span>
+                        <span *ngIf="vm.ticketEstadoId === ticketStatus.OnHold" [style.background-color]= "'#7575a3'" class="badge badge-primary">OnHold</span>
+                        <span *ngIf="vm.ticketEstadoId === ticketStatus.Cancelled" [style.background-color]= "'#808080'" class="badge badge-primary">Cancelled</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="card tmts-shadow">
+          <div class="card-body">
+            <h5>Ticket Entry</h5> <hr>                        
+
+            <div class="form-group">
+              <label class="col-form-label">Employee</label>
+              <tmts-select-empleado #empleadoSelect (enCambioEmpleado)="cambioEmpleado($event)"></tmts-select-empleado>
+            </div>
+
+            <label class="col-form-label mt-2 mr-2">Date </label>
+
+            <form class="form-inline">
+              <div class="form-group mb-3">
+                
+                <ng-container *ngIf="vmEntrada.ticketEntradaId > 0">
+                    <label class="col-form-label mr-2">{{ vmEntrada.fechaInicio | date: 'MM/dd/yyyy, h:m:ss a' }} </label>
+                </ng-container>
+
+                <ng-container *ngIf="vmEntrada.ticketEntradaId <= 0">
+                  <div class="input-group">
+                    <input class="form-control" readonly placeholder="choose the date" autocomplete="off" [owlDateTime]="dt1" name="fechaInicio" [(ngModel)]="modelFechaInicio">
+                    <div class="input-group-append trigger" [owlDateTimeTrigger]="dt1">
+                      <button class="btn btn-outline-secondary calendar" type="button"><i class="fa fa-calendar"></i></button>
+                    </div>
+                    <owl-date-time #dt1></owl-date-time>
+                  </div>
+                </ng-container>
+                
+                <label class="col-form-label ml-2 mr-2">To</label>
+
+                <div class="input-group">
+                  <input class="form-control" readonly placeholder="choose the date" autocomplete="off" [owlDateTime]="dt2" name="fechaFinal" [(ngModel)]="modelFechaFinal">
+                  <div class="input-group-append trigger" [owlDateTimeTrigger]="dt2">
+                    <button class="btn btn-outline-secondary calendar" type="button"><i class="fa fa-calendar"></i></button>
+                  </div>
+                  <owl-date-time #dt2></owl-date-time>
+                </div>
+              </div>
+            </form>
+
+            <div class="form-group">
+              <label class="col-form-label">Other Status</label>
+              <br>
+              <div id="ticketEstadoId" #ticketEstadoId="ngModel" required class="btn-group btn-group-toggle btn-group-sm" ngbRadioGroup name="ticketEstadoId" [(ngModel)]="vm.ticketEstadoId">
+                <label *ngFor="let opcion of listaEstado" ngbButtonLabel class="btn-outline-primary">
+                  <input ngbButton type="radio" [value]="opcion.id"> {{opcion.descripcion}}
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group m-b-10">
+              <label class="col-form-label">Nota</label>
+              <tmts-validacion-error [campo]="nota" [isSubmitted]="tmtsFormTicket.submitted"></tmts-validacion-error>
+              <textarea 
+                rows="4" 
+                class="form-control" 
+                placeholder="Nota or coment..."
+                [(ngModel)]="vmEntrada.nota" 
+                #nota="ngModel" 
+                id="nota" 
+                name="nota"
+                maxlength = "350"
+                required>
+              </textarea>
+              <tmts-validacion [campo]="nota" [isSubmitted]="tmtsFormTicket.submitted"></tmts-validacion>
+            </div>
+
+            <div class="mt-5 text-right">
+               <button type="submit" class="btn btn-primary mr-2"><i class="fa fa-save mr-1"></i>Guardar</button>
+               <button type="button" class="btn btn-danger" (click)="cancelar(tmtsFormTicket.pristine)"><i class="fa fa-times mr-1"></i>Cancelar</button>
+             </div>
+
+           </div>  
+          </div>
+        </div>
+
+      </div>
+  </form>
+ 
+</div>

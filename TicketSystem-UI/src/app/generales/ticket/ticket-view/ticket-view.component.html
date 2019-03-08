@@ -1,0 +1,126 @@
+<div class="row" *ngIf="!cargando">
+  <div class="col-md-12 col-lg-12 col-xl-8 offset-md-0 offset-lg-0 offset-xl-2">
+    <div class="card tmts-shadowIndex">
+      <div class="card-body">
+        <div class="row align-items-center">
+          <div class="col-8">
+            <h4>{{ estadoDescripcion }}</h4>
+            <h6 class="text-muted m-b-0">State</h6>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer" [style.background-color]="estadoColor">
+        <div class="row align-items-center">
+          <div class="col-12 text-right">
+              <i class="fa fa-info-circle text-white fa-2x"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row" *ngIf="!cargando">
+  <div class="col-md-12 col-lg-12 col-xl-8 offset-md-0 offset-lg-0 offset-xl-2">
+    <div class="card tmts-shadow" >
+      <div class="card-body">
+
+        <h5>PRINCIPAL INFORMATION</h5>
+        <div class="table-responsive">
+          <table class="table matrics-table">
+            <tbody>
+              <tr *ngIf="vm.numero">
+                <td><strong>#</strong></td>
+                <td>{{vm.numero}}</td>
+              </tr>
+              
+              <tr *ngIf="vm.tema">
+                <td><strong>Subject</strong></td>
+                <td>{{vm.tema}}</td>
+              </tr>
+
+              <tr *ngIf="vm.descripcion">
+                <td><strong>Description</strong></td>
+                <td>{{vm.descripcion}}</td>
+              </tr>
+
+              <tr *ngIf="vm.fechaCreacion">
+                <td><strong>Date</strong></td>
+                <td>{{vm.fechaCreacion | date:'MM/dd/yyyy'}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <ngb-tabset>
+          <ngb-tab title="Time Entries" *ngIf="vm.listaEntrada.length > 0">
+            <ng-template ngbTabContent>
+              
+              <div class="table-responsive mt-3" *ngIf="vm.listaEntrada.length > 0">
+                <table class="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th style="width: 35%" scope="col">Employee</th>
+                      <th style="width: 15%" scope="col" class="text-center">Date</th>
+                      <th style="width: 35%" scope="col">Description</th>
+                      <th style="width: 15%" scope="col" class="text-center">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of vm.listaEntrada">
+                      <td>{{ item.empleadoNombre }}</td>
+                      <td class="text-center">{{ item.fechaInicio | date:'MM/dd/yyyy' }}</td>
+                      <td>{{ item.nota }}</td>
+                      <td class="text-center">
+                        <a href="javascript:;" (click)="editarEntrada(item.ticketEntradaId)"><i class="fa fa-edit mr-2" placement="top" ngbTooltip="Edit"></i></a>
+                        <a href="javascript:;" style="color: red"><i class="fa fa-trash mr-2" placement="top" ngbTooltip="Delete" (click)="borrar(item.ticketId, item.nombre)"></i></a>                      
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+            </ng-template>
+          </ngb-tab>
+
+          <ngb-tab title="Employees" *ngIf="vm.listaEmpleado.length > 0">
+            <ng-template ngbTabContent>
+             
+              <div class="table-responsive mt-3" *ngIf="vm.listaEmpleado.length > 0">
+                <table class="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th style="width: 10%" scope="col">#</th>
+                      <th style="width: 30%" scope="col">First Name</th>
+                      <th style="width: 30%" scope="col">Last Name</th>
+                      <th style="width: 15%" scope="col">Email</th>
+                      <th style="width: 15%" scope="col" class="text-center">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of vm.listaEmpleado">
+                      <td>{{ item.numero }}</td>
+                      <td>{{ item.empleadoNombre }}</td>
+                      <td>{{ item.empleadoApellido }}</td>
+                      <td>{{ item.empleadoEmail }}</td>
+                      <td class="text-center">
+                        <a href="javascript:;" (click)="verEmpleado(item.empleadoId)"><i class="fa fa-eye mr-2" placement="top" ngbTooltip="View Information"></i></a>
+                        <a href="javascript:;" style="color: red"><i class="fa fa-trash mr-2" placement="top" ngbTooltip="Delete" (click)="borrar(item.ticketId, item.nombre)"></i></a>                      
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+            </ng-template>
+          </ngb-tab>
+        </ngb-tabset>
+
+
+        <div class="text-right">
+          <button type="button" (click)="volverAtras()" class="btn btn-primary mr-2 mt-3"><i class="fa fa-arrow-left mr-1"></i>Back</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

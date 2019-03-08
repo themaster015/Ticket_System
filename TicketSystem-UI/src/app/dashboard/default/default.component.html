@@ -1,0 +1,30 @@
+<div class="row">
+  <div class="col-sm-4">
+    <div class="jumbotron tmts-shadow">
+      <div class="col-12 logo-img">
+      <form class="form-inline">
+        <img class="mr-2" src="assets/images/logo.png">
+        <h1 class="display-4">Ticket System!</h1>
+      </form>
+      </div>
+      
+      <p class="lead">A system to manage all your tickets and your employee.</p>
+      <hr class="my-4">
+    </div>
+  </div>
+
+  <div class="col-sm-4">
+    <div class="card">
+      <div class="header">
+        <h1>{{ fecha | date:'EEEE'}}</h1>
+        <h1 class="dayCard">{{ fecha | date:'d' }}</h1>
+      </div>
+    
+      <div class="container dateCard">
+        <span>{{ fecha | date:'MMMM y' }}</span><br>
+        <span>{{ fecha | date:'h:mm:ss a' }}</span>
+      </div>
+    </div>
+  </div>
+  
+</div>

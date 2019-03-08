@@ -1,0 +1,31 @@
+    <nav class="navbar navbar-dark navbar-expand-lg bg-primary">
+      <a class="navbar-brand" [routerLinkActive]="['active']" [routerLink]="['/dashboard/default/']"><img class="mr-2" src="assets/images/logo.png" height="32" width="32">Ticket System</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" [routerLinkActive]="['active']" [routerLink]="['/generales/empleado/']">Employee</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLinkActive]="['active']" [routerLink]="['/generales/ticket/']">Tickets</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLinkActive]="['active']" [routerLink]="['/generales/reporte']">Reports</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLinkActive]="['active']" [routerLink]="['/generales/usuario/']">Users</a>
+          </li>
+        </ul>
+        <span class="navbar-text">
+          <a class="nav-link" href="javascript:;" (click)="cerrarCesion()"> <i class="fa fa-ban"></i>  Log Out</a>
+        </span>
+      </div>
+    </nav>
+   
+    <div class="container-fluid tmts-body">
+      <router-outlet></router-outlet>
+    </div> 
+
+    

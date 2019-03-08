@@ -1,0 +1,59 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~@ng-select/ng-select/themes/default.theme.css";
+@import "~ng-pick-datetime/assets/style/picker.min.css";
+
+.tmts-card-margin {
+  padding: 20px
+}
+
+.tmts-shadow {
+  padding: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin-bottom: 25px;
+}
+
+.tmts-shadowIndex {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin-bottom: 25px;
+}
+
+.tmts-shadow h5 {
+  font-size: 1.3em;
+  margin-bottom: 5px;
+}
+
+.tmts-shadowIndex .card-footer {
+  background: #d2e0f7;
+  padding: 5px;
+  margin-top: 5px;
+}
+
+.tmts-shadowIndex .card-footer .pagination {
+  margin-top: 5px;
+  margin-right: 7px;
+  float: right;
+}
+
+.tmts-shadowIndex .card-footer .tmts-span {
+  margin-top: 10px;
+  margin-right: 7px;
+  margin-left: 7px;
+}
+
+.tmts-shadowIndex .card-footer .tmts-cantidadPagina {
+  float: right;
+  margin-top: 10px;
+  height: 38px;
+  margin-right: 15px;
+  background: white;
+}
+
+.tmts-span {
+  padding: 5px;
+}
+// body { 
+  // height: 100% !important;
+  // color: #455a64 !important;
+  // background-color: #f3f3f3 !important; 
+  // background: url('/assets/images/mountain.jpeg') no-repeat center center fixed;
+// }

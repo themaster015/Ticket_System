@@ -1,0 +1,214 @@
+<h1 class="display-4 mb-3">Ticket List</h1> <hr>
+
+
+<ng-container *ngIf="vistaLista; else templateCard" >
+  <div class="card bg-light mb-3 tmts-shadowIndex">
+    <div class="tmts-card-margin">
+      
+      <div class="row mb-3">
+  
+        <div class="col-sm-5">
+          <div class="input-group">
+            <span class="span-pre-icono input-group-prepend">
+              <label class="input-group-text text-primary"><i class="fa fa-search text-primary"></i></label>
+            </span>
+            <input
+                type="text"
+                class="form-control"
+                placeholder="Search by: (subject, employee, description)"
+                [(ngModel)]="inputValue"
+                (keyup)="search()">
+            <div class="input-group-append" *ngIf="estaCargando">
+              <span class="input-group-text">
+              <i class="fa fa-spinner fa-spin" style="font-size:18px"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+  
+        <div class="col-sm-3">
+          <ng-select [items]="listaEstado"
+            bindLabel="descripcion"
+            bindValue="id"
+            placeholder="Select item ..."
+            appendTo="body"
+            [clearable]="false"
+            (change)="cambiarEstado()"
+            [(ngModel)]="selectedEstado">
+          </ng-select>
+        </div>
+
+        <div class="col-sm-2">
+          <button class="btn btn-outline-primary mr-1" (click)="cambiarVista(false)" type="button"><i class="fa fa-table"></i></button>
+          <button class="btn btn-outline-primary " (click)="cambiarVista(true)" type="button"><i class="fa fa-list"></i></button>
+        </div>
+      
+        <div class="col-sm-2">
+          <div class="text-right mb-2" *ngIf="detallePresentacion.length > 0">
+            <button style="float:right" class="btn btn-primary btn-round" (click)="agregarTicket()"> <i class="fa fa-plus mr-2"></i> New Ticket</button>
+          </div>
+        </div>
+      </div>
+  
+      <div class="" *ngIf="detallePresentacion.length <= 0">
+        <label class="text-muted">Dont't exist tickets add one new...</label>
+        <button class="btn btn-primary" style="float:right" (click)="agregarTicket()">New Ticket</button>
+      </div>
+      
+      <div class="table-responsive" *ngIf="detallePresentacion.length > 0">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th style="width: 5%" scope="col">#</th>
+              <th style="width: 15%" scope="col">Subject</th>
+              <th style="width: 30%" scope="col">Employee</th>
+              <th style="width: 15%" scope="col" class="text-center">Date</th>
+              <th style="width: 10%" scope="col" class="text-center">Status</th>
+              <th style="width: 15%" scope="col" class="text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of detallePresentacion">
+              <td>{{ item.numero }}</td>
+              <td>{{ item.tema }}</td>
+              <td>{{ item.empleadoNombre }}</td>
+              <td class="text-center">{{ item.fechaCreacion | date: 'MM/dd/yyyy' }}</td>
+              <td class="text-center">
+                <span *ngIf="item.ticketEstadoId === ticketStatus.Pending" [style.background-color]= "'#0149ad'" class="badge badge-primary">Pending</span>
+                <span *ngIf="item.ticketEstadoId === ticketStatus.Open" [style.background-color]= "'#00b300'" class="badge badge-primary">Open</span>
+                <span *ngIf="item.ticketEstadoId === ticketStatus.Concluded" [style.background-color]= "'#009900'" class="badge badge-primary">Concluded</span>
+                <span *ngIf="item.ticketEstadoId === ticketStatus.OnHold" [style.background-color]= "'#7575a3'" class="badge badge-primary">OnHold</span>
+                <span *ngIf="item.ticketEstadoId === ticketStatus.Cancelled" [style.background-color]= "'#808080'" class="badge badge-primary">Cancelled</span>
+              </td>
+              <td class="text-center">
+                <a href="javascript:;" (click)="crearEntrada(item)"><i class="fa fa-pencil mr-2" placement="top" ngbTooltip="Create Entry"></i></a>
+                <a [routerLink]="[item.ticketId, 'form']"><i class="fa fa-edit mr-2" placement="top" ngbTooltip="Edit"></i></a>
+                <a [routerLink]="[item.ticketId, 'view']"><i class="fa fa-eye mr-2" placement="top" ngbTooltip="View Information"></i></a>
+                <a href="javascript:;" style="color: red"><i class="fa fa-trash mr-2" placement="top" ngbTooltip="Delete" (click)="borrar(item.ticketId, item.nombre, item)"></i></a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  
+    <div class="card-footer">
+      <label class="tmts-span">{{ detalle.length }} total</label>
+  
+      <div class="pagination" *ngIf="detallePresentacion.length > 0">
+        <ngb-pagination (pageChange)="cambiaPagina($event)" [collectionSize]="cantidadPagina" [(page)]="page" [maxSize]="5" [pageSize]="cantidadPag" [rotate]="true" [ellipses]="false" [boundaryLinks]="true"></ngb-pagination>
+      </div>
+  
+      <div id="cantidad" #cantidad="ngModel" required class="btn-group btn-group-toggle btn-group-sm tmts-cantidadPagina" ngbRadioGroup name="cantidad" [(ngModel)]="cantidadPag" (ngModelChange)="cambiarCantidadPagina()">
+        <label *ngFor="let opcion of listacantidadPagina" ngbButtonLabel class="btn-outline-primary">
+          <input ngbButton type="radio" [value]="opcion"> {{opcion}}
+        </label>
+      </div>
+  
+      <span style="float: right" class="mr-2 mt-3"> {{ 'Rows Per Page: '}}  </span>
+    </div>
+  </div> 
+  
+</ng-container>
+
+
+<ng-template #templateCard>
+
+    <div class="card mb-3">
+      <div class="card-body">
+        <div class="row mb-3">
+          <div class="col-sm-5">
+            <div class="input-group">
+              <span class="span-pre-icono input-group-prepend">
+                <label class="input-group-text text-primary"><i class="fa fa-search text-primary"></i></label>
+              </span>
+              <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Search by: (subject, employee, description)"
+                  [(ngModel)]="inputValue"
+                  (keyup)="search()">
+              <div class="input-group-append" *ngIf="estaCargando">
+                <span class="input-group-text">
+                <i class="fa fa-spinner fa-spin" style="font-size:18px"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+        
+          <div class="col-sm-3">
+            <ng-select [items]="listaEstado"
+              bindLabel="descripcion"
+              bindValue="id"
+              placeholder="Select item ..."
+              appendTo="body"
+              [clearable]="false"
+              (change)="cambiarEstado()"
+              [(ngModel)]="selectedEstado">
+            </ng-select>
+          </div>
+    
+          <div class="col-sm-2">
+            <button class="btn btn-outline-primary mr-1" (click)="cambiarVista(false)" type="button"><i class="fa fa-table"></i></button>
+            <button class="btn btn-outline-primary " (click)="cambiarVista(true)" type="button"><i class="fa fa-list"></i></button>
+          </div>
+        
+          <div class="col-sm-2">
+            <div class="text-right mb-2" *ngIf="detallePresentacion.length > 0">
+              <button style="float:right" class="btn btn-primary btn-round" (click)="agregarTicket()"> <i class="fa fa-plus mr-2"></i> New Ticket</button>
+            </div>
+          </div>
+    
+        </div>
+      </div>
+    </div>
+
+  <div class="card bg-light mb-3 tmts-shadowIndex">
+   
+    <div class="row ml-3 mt-3">
+      <div class="card border-secondary mb-3 mr-4 card-ticket" *ngFor="let item of detallePresentacion">
+        <div class="card-header">
+          <b>Ticket No. {{ item.numero }}</b>
+          <span class="card-icons">
+            <a href="javascript:;" (click)="crearEntrada(item)"><i class="fa fa-pencil mr-2" placement="top" ngbTooltip="Create Entry"></i></a>
+            <a [routerLink]="[item.ticketId, 'form']"><i class="fa fa-edit mr-2" placement="top" ngbTooltip="Edit"></i></a>
+            <a [routerLink]="[item.ticketId, 'view']"><i class="fa fa-eye mr-2" placement="top" ngbTooltip="View Information"></i></a>
+            <a href="javascript:;" style="color: red"><i class="fa fa-trash mr-2" placement="top" ngbTooltip="Delete" (click)="borrar(item.ticketId, item.nombre, item)"></i></a>
+          </span>
+        </div>
+        <div class="card-body text-secondary">              
+          <h5 class="card-title">{{ item.tema }}</h5>
+          <p class="card-text">{{ item.descripcion }}</p>
+        </div>
+    
+        <div class="card-footer">
+          <div class="text-right card-status">
+            <h5><span class="badge badge-primary" *ngIf="item.ticketEstadoId === ticketStatus.Pending" [style.background-color]= "'#0149ad'">Pending</span></h5>
+            <h5><span class="badge badge-primary" *ngIf="item.ticketEstadoId === ticketStatus.Open" [style.background-color]= "'#00b300'">Open</span></h5>
+            <h5><span class="badge badge-primary" *ngIf="item.ticketEstadoId === ticketStatus.Concluded" [style.background-color]= "'#009900'">Concluded</span></h5>
+            <h5><span class="badge badge-primary" *ngIf="item.ticketEstadoId === ticketStatus.OnHold" [style.background-color]= "'#7575a3'">OnHold</span></h5>
+            <h5><span class="badge badge-primary" *ngIf="item.ticketEstadoId === ticketStatus.Cancelled" [style.background-color]= "'#808080'">Cancelled</span></h5>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card-footer">
+        <label class="tmts-span">{{ detalle.length }} total</label>
+    
+        <div class="pagination" *ngIf="detallePresentacion.length > 0">
+          <ngb-pagination (pageChange)="cambiaPagina($event)" [collectionSize]="cantidadPagina" [(page)]="page" [maxSize]="5" [pageSize]="cantidadPag" [rotate]="true" [ellipses]="false" [boundaryLinks]="true"></ngb-pagination>
+        </div>
+    
+        <div id="cantidad" #cantidad="ngModel" required class="btn-group btn-group-toggle btn-group-sm tmts-cantidadPagina" ngbRadioGroup name="cantidad" [(ngModel)]="cantidadPag" (ngModelChange)="cambiarCantidadPagina()">
+          <label *ngFor="let opcion of listacantidadPagina" ngbButtonLabel class="btn-outline-primary">
+            <input ngbButton type="radio" [value]="opcion"> {{opcion}}
+          </label>
+        </div>
+    
+        <span style="float: right" class="mr-2 mt-3"> {{ 'Rows Per Page: '}}  </span>
+    </div>
+  </div>
+
+
+</ng-template>

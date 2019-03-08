@@ -1,0 +1,62 @@
+<div *ngIf="vm">
+    <form #tmtsFormTicket="ngForm" action="javascript:" (ngSubmit)="registrar(tmtsFormTicket)">
+      <div class="row">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-10 col-xl-6 offset-lg-1 offset-xl-3">
+  
+          <tmts-identificador [identificador]="vm.numero"></tmts-identificador>
+  
+          <div class="card tmts-shadow">
+            <div class="card-body">
+              <h5>Principal Information</h5> <hr>                        
+  
+              <div class="form-group">
+                <label class="col-form-label">Subject</label>
+                <tmts-validacion-error [campo]="tema" [isSubmitted]="tmtsFormTicket.submitted"></tmts-validacion-error>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  [(ngModel)]="vm.tema" 
+                  #tema="ngModel"
+                  name="tema" 
+                  id="tema" 
+                  required maxlength="150" 
+                  autofocus>
+                <tmts-validacion [campo]="tema" [isSubmitted]="tmtsFormTicket.submitted"></tmts-validacion>
+              </div>
+
+              <div class="form-group m-b-10">
+                <label class="col-form-label" >Description</label>
+                <tmts-validacion-error [campo]="descripcion" [isSubmitted]="tmtsFormTicket.submitted"></tmts-validacion-error>
+                <textarea 
+                  rows="4" 
+                  class="form-control" 
+                  placeholder="Nota or coment..."
+                  [(ngModel)]="vm.descripcion" 
+                  #descripcion="ngModel" 
+                  id="descripcion" 
+                  name="descripcion"
+                  maxlength = "350"
+                  required>
+                </textarea>
+                <tmts-validacion [campo]="descripcion" [isSubmitted]="tmtsFormTicket.submitted"></tmts-validacion>
+              </div>
+             </div>  
+            </div>
+
+            <tmts-ticket-form-empleado [detalle]="vm.listaEmpleado"></tmts-ticket-form-empleado>
+
+            <div class="card">
+              <div class="card-body tmts-shadow">
+                <div class="mt-8 mb-8 text-right">
+                  <button type="submit" class="btn btn-primary mr-2"><i class="fa fa-save mr-1"></i>Guardar</button>
+                  <button type="button" class="btn btn-danger" (click)="cancelar(tmtsFormTicket.pristine)"><i class="fa fa-times mr-1"></i>Cancelar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+        </div>
+    </form>
+   
+  </div>
+  

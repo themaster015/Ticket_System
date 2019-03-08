@@ -1,0 +1,73 @@
+
+<div class="card">
+  <div class="card-body tmts-shadow">
+    <h5>Employee List</h5>
+
+    <div *ngIf="!(detalle && detalle.length > 0)" class="inline-block m-r-20 m-t-20">
+      <label class="ml-20 text-muted text-dark text"> Don't exist elements to show.</label>
+      <a href="javascript:" (click)="agregarNuevo(content)" >
+        <i class="fa fa-plus-circle mr-2 fa-2x" title="Agregar Nuevo" style="float: right; color:green"></i>
+      </a>
+    </div>
+  
+    <div *ngIf="detalle && detalle.length > 0" class="table-responsive">
+      <table class="table table-sm mt-3">
+        <thead>
+          <tr>
+            <th style="width: 80%" class="align-middle">Employee Full Name</th>
+            <th style="width: 20%" class="align-middle text-right">
+              <a href="javascript:" (click)="agregarNuevo()" *ngIf="!estaEditando">
+                <i class="fa fa-plus-circle fa-2x"  style="float: right; color:green" title="Agregar Nuevo"></i>
+              </a>
+            </th>         
+          </tr>
+        </thead>
+  
+        <tbody>
+          <tr *ngFor="let item of detalle; let i=index">
+            <ng-container *ngIf="item.estaEditando; else relacionadoView">
+          
+              <td>
+                <tmts-select-empleado #empleadoSelect (enCambioEmpleado)="cambioEmpleado($event)"></tmts-select-empleado>
+              </td>
+  
+              <td class="text-right">
+                <button type="button" class="btn btn-primary btn-sm mr-2" (click)="aceptarEdicion(item)"><i class="fa fa-check"></i></button>              
+                <button type="button" class="btn btn-danger btn-sm" (click)="cancelarEdicion(item)"><i class="fa fa-ban"></i></button>
+              </td>
+            </ng-container>
+  
+            <ng-template #relacionadoView>
+              <td class="align-middle">
+                <label class="col-form-label">{{ item.empleadoNombre }}</label>
+              </td>
+            </ng-template>
+  
+  
+            <td class="text-right align-middle" *ngIf="!item.estaEditando">
+              <ng-container>
+                <a href="javascript:;" >
+                  <i class="fa fa-pencil fa-1x ml-3"
+                    (click)="editarDetalle(item)" 
+                    title="Editar Relacionado">
+                  </i>
+                </a>
+              </ng-container>
+  
+              <ng-container>
+                <a href="javascript:;">
+                    <i class=" fa fa-trash fa-1x ml-3" 
+                      (click)="borrarDetalle(item)" 
+                      title="Borrar">
+                    </i>
+                </a>
+              </ng-container> 
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    </div>
+  </div>
+
+  

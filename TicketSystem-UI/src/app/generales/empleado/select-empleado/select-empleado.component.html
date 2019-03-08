@@ -1,0 +1,12 @@
+<ng-select 
+  [items]="listaEmpleadoBuffer"
+  bindLabel="nombreCompleto"
+  placeholder="Select item ..."
+  appendTo="body"
+  [virtualScroll]="true"
+  [loading]="loading"
+  (change)="cambioEmpleado($event)"
+  (scroll)="onScroll($event)"
+  (scrollToEnd)="onScrollToEnd()"
+  [(ngModel)]="selectedEmpleado">
+</ng-select>

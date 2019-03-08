@@ -1,0 +1,112 @@
+  <h1 class="display-4 mb-3">Employee List</h1> <hr>
+
+
+  <div class="card bg-light mb-3 tmts-shadowIndex">
+    <div class="tmts-card-margin">
+      
+      <div class="row mb-3">
+  
+        <div class="col-sm-5">
+          <div class="input-group">
+            <span class="span-pre-icono input-group-prepend">
+              <label class="input-group-text text-primary"><i class="fa fa-search text-primary"></i></label>
+            </span>
+            <input
+                type="text"
+                class="form-control"
+                placeholder="Search by: (name, last name, ID, email)"
+                [(ngModel)]="inputValue"
+                (keyup)="search()">
+            <div class="input-group-append" *ngIf="estaCargando">
+              <span class="input-group-text">
+              <i class="fa fa-spinner fa-spin" style="font-size:18px"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-3">
+          <ng-select [items]="listaEstado"
+            bindLabel="descripcion"
+            bindValue="id"
+            placeholder="Select item ..."
+            appendTo="body"
+            [clearable]="false"
+            (change)="cambiarEstado()"
+            [(ngModel)]="selectedEstado">
+          </ng-select>
+        </div>
+      
+        <div class="col-sm-4">
+          <div class="text-right mb-2" *ngIf="detallePresentacion.length > 0">
+            <button style="float:right" class="btn btn-primary btn-round" (click)="agregarEmpleado()"> <i class="fa fa-user-plus mr-2"></i> New Employee</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="" *ngIf="detallePresentacion.length <= 0">
+        <label class="text-muted">Don't exist employees add one new...</label>
+        <button class="btn btn-primary" style="float:right" (click)="agregarEmpleado()">New Employee</button>
+      </div>
+      
+      <div class="table-responsive" *ngIf="detallePresentacion.length > 0">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th style="width: 5%" scope="col">#</th>
+              <th style="width: 15%" scope="col">ID</th>
+              <th style="width: 30%" scope="col">Employee</th>
+              <th style="width: 15%" scope="col">Email</th>
+              <th style="width: 10%" scope="col" class="text-center">Date Created</th>
+              <th style="width: 10%" scope="col" class="text-center">Status</th>
+              <th style="width: 15%" scope="col" class="text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of detallePresentacion">
+              <td>{{ item.identificador }}</td>
+              <td>{{ item.cedula }}</td>
+              <td>{{ item.nombre }} {{ item.apellido }} </td>
+              <td>{{ item.email }}</td>
+              <td class="text-center">{{ item.fechaCreacion | date: 'MM/dd/yyyy' }}</td>
+              <td class="text-center">
+                <span *ngIf="item.estado" class="badge badge-success tmts-span">Active</span>
+                <span *ngIf="!item.estado" class="badge badge-danger">Inactive</span>
+              </td>
+              <td class="text-center">
+                <a [routerLink]="[item.empleadoId, 'form']"><i class="fa fa-edit mr-2" placement="top" ngbTooltip="Edit"></i></a>
+                <a [routerLink]="[item.empleadoId, 'view']"><i class="fa fa-eye mr-2" placement="top" ngbTooltip="View Information"></i></a>
+                <a href="javascript:;" style="color: red"><i class="fa fa-trash mr-2" placement="top" ngbTooltip="Delete" (click)="borrar(item.empleadoId, item.nombre)"></i></a>
+                
+                <a *ngIf="!item.estado" href="javascript:;" style="color: red">
+                    <i class="fa fa-check-circle-o mr-2" placement="top" ngbTooltip="Activate" (click)="activar(item.empleadoId, item.nombre)"></i>
+                </a>
+                
+                <a *ngIf="item.estado" href="javascript:;" style="color: green">
+                    <i class="fa fa-check-circle mr-2" placement="top" ngbTooltip="Inactivate" (click)="inactivar(item.empleadoId, item.nombre)"></i> 
+                </a>
+               
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <label class="tmts-span">{{ detalle.length }} total</label>
+
+      <div class="pagination" *ngIf="detallePresentacion.length > 0">
+        <ngb-pagination (pageChange)="cambiaPagina($event)" [collectionSize]="cantidadPagina" [(page)]="page" [maxSize]="5" [pageSize]="cantidadPag" [rotate]="true" [ellipses]="false" [boundaryLinks]="true"></ngb-pagination>
+      </div>
+
+      <div id="cantidad" #cantidad="ngModel" required class="btn-group btn-group-toggle btn-group-sm tmts-cantidadPagina" ngbRadioGroup name="cantidad" [(ngModel)]="cantidadPag" (ngModelChange)="cambiarCantidadPagina()">
+        <label *ngFor="let opcion of listacantidadPagina" ngbButtonLabel class="btn-outline-primary">
+          <input ngbButton type="radio" [value]="opcion"> {{opcion}}
+        </label>
+      </div>
+
+      <span style="float: right" class="mr-2 mt-3"> {{ 'Rows Per Page: '}}  </span>
+    </div>
+  </div> 
+  

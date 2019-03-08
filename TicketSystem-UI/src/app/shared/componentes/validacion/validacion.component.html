@@ -1,0 +1,6 @@
+<div *ngIf="campo.invalid && (campo.dirty || campo.touched || isSubmitted)" class="text-danger">
+  <div *ngIf="campo.errors.required">The field is required.</div>
+  <div *ngIf="campo.errors.minlength">The field must be at least {{campo.errors.minlength.requiredLength}} character(s).</div>
+  <div *ngIf="campo.errors.maxlength">The field must be not more than {{campo.errors.maxlength.requiredLength}} character(s).</div>
+  <div *ngIf="campo.errors.pattern">The field doesn't match with the pattern.</div>
+</div>

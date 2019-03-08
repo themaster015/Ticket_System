@@ -1,0 +1,102 @@
+<div *ngIf="vm">
+  <form #tmtsFormEmpleado="ngForm" action="javascript:" (ngSubmit)="registrar(tmtsFormEmpleado)">
+    <div class="row">
+      <div class="col-12 col-sm-12 col-md-12 col-lg-10 col-xl-6 offset-lg-1 offset-xl-3">
+
+        <tmts-identificador [identificador]="vm.identificador"></tmts-identificador>
+
+        <div class="card tmts-shadow">
+          <div class="card-body">
+            <h5>Principal Information</h5>                       
+
+            <div class="form-group">
+              <label class="col-form-label">First Name</label>
+              <tmts-validacion-error [campo]="nombre" [isSubmitted]="tmtsFormEmpleado.submitted"></tmts-validacion-error>
+              <input 
+                type="text" 
+                class="form-control" 
+                [(ngModel)]="vm.nombre" 
+                #nombre="ngModel"
+                name="nombre" 
+                id="nombre" 
+                required maxlength="100" 
+                autofocus>
+              <tmts-validacion [campo]="nombre" [isSubmitted]="tmtsFormEmpleado.submitted"></tmts-validacion>
+            </div>
+
+            <div class="form-group">
+              <label class="col-form-label">Last Name</label>
+              <tmts-validacion-error [campo]="apellido" [isSubmitted]="tmtsFormEmpleado.submitted"></tmts-validacion-error>
+              <input 
+                type="text" 
+                class="form-control" 
+                [(ngModel)]="vm.apellido" 
+                #apellido="ngModel"
+                name="apellido" 
+                id="apellido" 
+                required maxlength="100" 
+                autofocus>
+              <tmts-validacion [campo]="apellido" [isSubmitted]="tmtsFormEmpleado.submitted"></tmts-validacion>
+            </div>
+
+            <div class="form-group">
+              <label class="col-form-label">Gender</label>
+              <tmts-validacion-error [campo]="sexo"></tmts-validacion-error>
+              <br>
+              <div id="sexo" #sexo="ngModel" required class="btn-group btn-group-toggle btn-group-sm" ngbRadioGroup name="sexo" [(ngModel)]="vm.sexo">
+                <label *ngFor="let opcion of listaSexo" ngbButtonLabel class="btn-outline-primary">
+                  <input ngbButton type="radio" [value]="opcion.id"> {{opcion.descripcion}}
+                </label>
+              </div>
+            </div>
+
+           <div class="row">
+              <div class="col-sm-6">               
+                <div class="form-group">
+                  <label class="col-form-label">ID</label>
+                  <tmts-validacion-error [campo]="cedula" [isSubmitted]="tmtsFormEmpleado.submitted"></tmts-validacion-error>
+                  <input 
+                    type = "text" 
+                    class="form-control" 
+                    [textMask]="{mask: maskCedula}"
+                    [(ngModel)]="vm.cedula" 
+                    #cedula="ngModel" 
+                    id="cedula" 
+                    name="cedula"
+                    required>
+                    <tmts-validacion [campo]="cedula" [isSubmitted]="tmtsFormEmpleado.submitted"></tmts-validacion>
+                </div>
+              </div>
+             
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="col-form-label">Email</label>
+                  <tmts-validacion-error [campo]="email" [isSubmitted]="tmtsFormEmpleado.submitted"></tmts-validacion-error>
+                  <input 
+                    type="email" 
+                    class="form-control" 
+                    [(ngModel)]="vm.email" 
+                    #email="ngModel"
+                    name="email" 
+                    id="email" 
+                    required maxlength="100" 
+                    autofocus>
+                  <tmts-validacion [campo]="email" [isSubmitted]="tmtsFormEmpleado.submitted"></tmts-validacion>
+                </div>
+              </div>
+             
+           </div>
+           
+            <hr class="mt-5">
+            <div class="mt-8 mb-8 text-right">
+              <button type="submit" class="btn btn-primary mr-2"><i class="fa fa-save mr-1"></i>Guardar</button>
+              <button type="button" class="btn btn-danger" (click)="cancelar(tmtsFormEmpleado.pristine)"><i class="fa fa-times mr-1"></i>Cancelar</button>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </form>
+</div>

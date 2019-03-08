@@ -1,0 +1,83 @@
+<div *ngIf="vm">
+    <form #tmtsFormUsuario="ngForm" action="javascript:" (ngSubmit)="registrar(tmtsFormUsuario)">
+      <div class="row">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-10 col-xl-6 offset-lg-1 offset-xl-3">
+  
+          <tmts-identificador [identificador]="vm.identificador"></tmts-identificador>
+  
+          <div class="card tmts-shadow">
+            <div class="card-body">
+              <h5>Principal Information</h5>                       
+  
+              <div class="form-group">
+                <label class="col-form-label">User Name</label>
+                <tmts-validacion-error [campo]="userName" [isSubmitted]="tmtsFormUsuario.submitted"></tmts-validacion-error>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  [(ngModel)]="vm.userName" 
+                  #userName="ngModel"
+                  name="userName" 
+                  id="userName" 
+                  required maxlength="100" 
+                  autofocus>
+                <tmts-validacion [campo]="userName" [isSubmitted]="tmtsFormUsuario.submitted"></tmts-validacion>
+              </div>
+
+              <div *ngIf="+vm.usuarioId <=0 ">
+                <div class="form-group">
+                  <label class="col-form-label">Password</label>
+                  <tmts-validacion-error [campo]="userPassword" [isSubmitted]="tmtsFormUsuario.submitted"></tmts-validacion-error>
+                  <input 
+                  type="password" 
+                    class="form-control" 
+                    [(ngModel)]="vm.userPassword" 
+                    #userPassword="ngModel"
+                    name="userPassword" 
+                    id="userPassword" 
+                    required maxlength="100" 
+                    autofocus>
+                  <tmts-validacion [campo]="userPassword" [isSubmitted]="tmtsFormUsuario.submitted"></tmts-validacion>
+                </div>
+                
+                <div class="form-group">
+                  <label class="col-form-label">Password Repeat</label>
+                  <tmts-validacion-error [campo]="userPassword2" [isSubmitted]="tmtsFormUsuario.submitted"></tmts-validacion-error>
+                  <input 
+                    type="password" 
+                    class="form-control" 
+                    [(ngModel)]="vm.userPassword2" 
+                    #userPassword2="ngModel"
+                    name="userPassword2" 
+                    id="userPassword2" 
+                    required maxlength="100" 
+                    autofocus>
+                  <tmts-validacion [campo]="userPassword2" [isSubmitted]="tmtsFormUsuario.submitted"></tmts-validacion>
+                </div>
+              </div>
+  
+              <div class="form-group">
+                <label class="col-form-label">Administrator</label>
+                <tmts-validacion-error [campo]="esAdministrador"></tmts-validacion-error>
+                <br>
+                <div id="esAdministrador" #esAdministrador="ngModel" required class="btn-group btn-group-toggle btn-group-sm" ngbRadioGroup name="esAdministrador" [(ngModel)]="vm.esAdministrador">
+                  <label *ngFor="let opcion of listaAdmin" ngbButtonLabel class="btn-outline-primary">
+                    <input ngbButton type="radio" [value]="opcion.id"> {{opcion.descripcion}}
+                  </label>
+                </div>
+              </div>
+  
+              <hr class="mt-5">
+              <div class="mt-8 mb-8 text-right">
+                <button type="submit" class="btn btn-primary mr-2"><i class="fa fa-save mr-1"></i>Guardar</button>
+                <button type="button" class="btn btn-danger" (click)="cancelar(tmtsFormUsuario.pristine)"><i class="fa fa-times mr-1"></i>Cancelar</button>
+              </div>
+  
+            </div>
+          </div>
+  
+        </div>
+      </div>
+    </form>
+  </div>
+  
